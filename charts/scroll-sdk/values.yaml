@@ -16,85 +16,85 @@ blockscout:
     frontend:
       replicaCount: 1
 
-bridge-history-api:
-  enabled: true
-  ingress:
-    main:
-      enabled: true
-      primary: true
-      annotations: {}
-      labels: {}
-      ingressClassName: "nginx"
-      hosts:
-        - host: bridge-history-api.scrollsdk
-          paths:
-            - path: /
-              pathType: Prefix
+# bridge-history-api:
+#   enabled: true
+#   ingress:
+#     main:
+#       enabled: true
+#       primary: true
+#       annotations: {}
+#       labels: {}
+#       ingressClassName: "nginx"
+#       hosts:
+#         - host: bridge-history-api.scrollsdk
+#           paths:
+#             - path: /
+#               pathType: Prefix
 
-bridge-history-fetcher:
-  enabled: true
+# bridge-history-fetcher:
+#   enabled: true
 
-balance-checker:
-  enabled: true
+# balance-checker:
+#   enabled: true
 
-chain-monitor:
-  enabled: true
+# chain-monitor:
+#   enabled: true
 
 contracts:
   enabled: true
 
-coordinator-api:
-  enabled: false
+# coordinator-api:
+#   enabled: false
 
-coordinator-cron:
-  enabled: false
+# coordinator-cron:
+#   enabled: false
 
-frontends:
-  enabled: true
-  ingress:
-    main:
-      enabled: true
-      hosts:
-        - host: frontends.scrollsdk
-          paths:
-            - path: /
-              pathType: Prefix
+# frontends:
+#   enabled: true
+#   ingress:
+#     main:
+#       enabled: true
+#       hosts:
+#         - host: frontends.scrollsdk
+#           paths:
+#             - path: /
+#               pathType: Prefix
 
-gas-oracle:
-  enabled: true
+# gas-oracle:
+#   enabled: true
 
-rollup-explorer-backend:
-  enabled: true
-  ingress:
-    main:
-      enabled: true
-      primary: true
-      annotations: {}
-      labels: {}
-      ingressClassName: "nginx"
-      hosts:
-        - host: rollup-explorer-backend.scrollsdk
-          paths:
-            - path: /
-              pathType: Prefix
+# rollup-explorer-backend:
+#   enabled: true
+#   ingress:
+#     main:
+#       enabled: true
+#       primary: true
+#       annotations: {}
+#       labels: {}
+#       ingressClassName: "nginx"
+#       hosts:
+#         - host: rollup-explorer-backend.scrollsdk
+#           paths:
+#             - path: /
+#               pathType: Prefix
 
-rollup-node:
-  enabled: true
+# rollup-node:
+#   enabled: true
 
-l1-explorer:
-  enabled: true
-  blockscout-stack:
-    frontend:
-      replicaCount: 1
-  ingress:
-    main:
-      enabled: true
-      ingressClassName: "nginx"
-      hosts:
-        - host: l1-explorer.scrollsdk
-          paths:
-            - path: /
-              pathType: Prefix
+# l1-explorer:
+#   enabled: true
+#   blockscout-stack:
+#     frontend:
+#       replicaCount: 1
+#   ingress:
+#     main:
+#       enabled: true
+#       ingressClassName: "nginx"
+#       hosts:
+#         - host: l1-explorer.scrollsdk
+#           paths:
+#             - path: /
+#               pathType: Prefix
 
 l2-sequencer:
   enabled: true
@@ -115,7 +115,7 @@ l2-bootnode:
   enabled: true
 
 blockscout-sc-verifier:
-  enabled: true
+  enabled: false
 
 rpc-gateway:
   enabled: false
@@ -150,22 +150,22 @@ scroll-monitor:
     alertmanager:
       enabled: false
 
-admin-system-backend:
-  enabled: true
+# admin-system-backend:
+#   enabled: true
 
-admin-system-cron:
-  enabled: true
+# admin-system-cron:
+#   enabled: true
 
-admin-system-dashboard:
-  enabled: true
-  ingress:
-    main:
-      enabled: true
-      hosts:
-        - host: admin-system-dashboard.scrollsdk
-          paths:
-            - path: /
-              pathType: Prefix
+# admin-system-dashboard:
+#   enabled: true
+#   ingress:
+#     main:
+#       enabled: true
+#       hosts:
+#         - host: admin-system-dashboard.scrollsdk
+#           paths:
+#             - path: /
+#               pathType: Prefix
 
 postgresql:
   enabled: true
@@ -207,8 +207,8 @@ db:
   pg_user: "postgres"
   pg_password: "qwerty12345"
   pg_port: "5432"
-  bridge_history_password: "test1234"
-  chain_monitor_password: "test1234"
-  gas_oracle_password: "test1234"
-  rollup_node_password: "test1234"
+  # bridge_history_password: "test1234"
+  # chain_monitor_password: "test1234"
+  # gas_oracle_password: "test1234"
+  # rollup_node_password: "test1234"
   rpc_gateway_password: "test1234"
