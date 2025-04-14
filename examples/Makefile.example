@@ -103,8 +103,8 @@ install:
 		--version=0.1.2-dogeos \
 		--values values/blockscout-production.yaml
 
-	# helm upgrade -i blockscout-sc-verifier oci://ghcr.io/scroll-tech/scroll-sdk/helm/blockscout-sc-verifier -n $(NAMESPACE) \
-	# 	--version=0.1.1
+	helm upgrade -i blockscout-sc-verifier oci://ghcr.io/scroll-tech/scroll-sdk/helm/blockscout-sc-verifier -n $(NAMESPACE) \
+	 	--version=0.1.2-dogeos
 
 
 install-l1-devnet:
