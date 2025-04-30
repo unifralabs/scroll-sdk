@@ -19,7 +19,7 @@ Kubernetes: `>=1.22.0-0`
 | Repository | Name | Version |
 |------------|------|---------|
 | oci://ghcr.io/dogeos69/scroll-sdk/helm | blockscout | 0.1.4-dogeos |
-| oci://ghcr.io/dogeos69/scroll-sdk/helm | contracts | 0.1.4-dogeos |
+| oci://ghcr.io/dogeos69/scroll-sdk/helm | contracts | 0.1.5-dogeos |
 | oci://ghcr.io/dogeos69/scroll-sdk/helm | l2-bootnode | 0.1.3-dogeos |
 | oci://ghcr.io/dogeos69/scroll-sdk/helm | l2-rpc | 0.1.3-dogeos |
 | oci://ghcr.io/dogeos69/scroll-sdk/helm | l2-sequencer | 0.1.3-dogeos |
