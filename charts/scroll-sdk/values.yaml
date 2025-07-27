@@ -16,6 +16,34 @@ blockscout:
     frontend:
       replicaCount: 1
 
+# L2Scan Stack CE - Alternative blockchain explorer
+l2scan-stack-ce:
+  enabled: false  # Disabled by default, set to true to use as blockscout alternative
+  
+  # Configure our published chart
+  app:
+    env:
+      RPC: "http://l2-rpc:8545"
+      VERIFICATION_URL: "http://l2scan-stack-ce-verifier:8050"
+    ingress:
+      enabled: true
+      hosts:
+        - host: l2scan.scrollsdk
+          paths:
+            - path: /
+              pathType: Prefix
+  
+  indexer:
+    env:
+      L2_RPC: "http://l2-rpc:8545"
+  
+  # Use external database if available, or enable embedded ones
+  postgresql:
+    enabled: true
+  
+  redis:
+    enabled: true
+
 bridge-history-api:
   enabled: true
   ingress:

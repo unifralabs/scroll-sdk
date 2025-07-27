@@ -37,6 +37,10 @@ dependencies:
     version: 0.1.1
     repository: "oci://ghcr.io/scroll-tech/scroll-sdk/helm"
     condition: blockscout-sc-verifier.enabled
+  - name: l2scan-stack-ce
+    version: 0.1.1
+    repository: "oci://ghcr.io/unifralabs/helm"
+    condition: l2scan-stack-ce.enabled
   - name: bridge-history-api
     version: 0.1.2
     repository: "oci://ghcr.io/scroll-tech/scroll-sdk/helm"

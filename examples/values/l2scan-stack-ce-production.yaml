@@ -1,0 +1,222 @@
+# Configuration for the published L2Scan Stack CE chart
+# Chart: oci://ghcr.io/unifralabs/helm/l2scan-stack-ce
+  app:
+    image:
+      registry: ghcr.io
+      repository: unifralabs/l2scan-ce
+      tag: main  # Use stable tag in production
+      pullPolicy: IfNotPresent
+
+    env:
+      # RPC connection to Scroll SDK L2
+      RPC: "http://l2-rpc:8545"
+      
+      # Smart contract verification
+      VERIFICATION_URL: "http://l2scan-verifier:8050"
+      
+      NODE_ENV: "production"
+      
+      # Additional Scroll-specific configurations can be added here
+      CHAIN_NAME: "Scroll L2"
+      CHAIN_ID: ""  # Set the actual chain ID
+      CURRENCY_SYMBOL: "ETH"
+
+    # Use external secrets for sensitive data
+    envFrom:
+      - secretRef:
+          name: l2scan-secret-env
+
+    extraEnv:
+      - name: DATABASE_URL
+        valueFrom:
+          secretKeyRef:
+            name: l2scan-secret-env
+            key: DATABASE_URL
+      - name: REDIS_URL
+        valueFrom:
+          secretKeyRef:
+            name: l2scan-secret-env
+            key: REDIS_URL
+
+    ingress:
+      enabled: true
+      className: ""  # Set your ingress class name
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        nginx.ingress.kubernetes.io/enable-cors: "true"
+        nginx.ingress.kubernetes.io/cors-allow-origin: "https://l2scan.scrollsdk"
+        nginx.ingress.kubernetes.io/cors-allow-headers: "Content-Type, Authorization"
+        nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, OPTIONS"
+        nginx.ingress.kubernetes.io/cors-max-age: "86400"
+        nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+        nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+      hosts:
+        - host: ""  # Set hostname, example: l2scan.scrollsdk
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        enabled: true
+        secretName: l2scan-tls  # Set TLS secret name
+
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "500m"
+      limits:
+        memory: "4Gi"
+        cpu: "2000m"
+
+    persistence:
+      enabled: true
+      size: 20Gi
+      storageClass: ""  # Set your storage class
+
+  indexer:
+    image:
+      registry: ghcr.io
+      repository: unifralabs/l2scan-indexer-ce
+      tag: main  # Use stable tag in production
+      pullPolicy: IfNotPresent
+
+    env:
+      # L2 RPC connection
+      L2_RPC: "http://l2-rpc:8545"
+      
+      # Worker configuration for production
+      WORKER: "4"  # Increase workers for better performance
+      
+      # Performance tuning
+      BATCH_SIZE: "1000"
+      FETCH_INTERVAL: "1000"
+
+    envFrom:
+      - secretRef:
+          name: l2scan-secret-env
+
+    extraEnv:
+      - name: PGDSN
+        valueFrom:
+          secretKeyRef:
+            name: l2scan-secret-env
+            key: PGDSN
+
+    resources:
+      requests:
+        memory: "2Gi"
+        cpu: "1000m"
+      limits:
+        memory: "8Gi"
+        cpu: "4000m"
+
+    persistence:
+      enabled: true
+      size: 50Gi
+      storageClass: ""  # Set your storage class
+
+  verifier:
+    enabled: true
+    image:
+      registry: ghcr.io
+      repository: blockscout/smart-contract-verifier
+      tag: v1.10.0
+      pullPolicy: IfNotPresent
+
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "500m"
+      limits:
+        memory: "4Gi"
+        cpu: "2000m"
+
+    persistence:
+      enabled: true
+      size: 100Gi
+      storageClass: ""  # Set your storage class
+
+    config: |
+      [server]
+      http_port = 8050
+      grpc_port = 8051
+      
+      [database]
+      type = "postgres"
+      # Database URL will be injected via environment variable
+      
+      [solidity]
+      enabled = true
+      compilers_dir = "/tmp/compilers"
+      
+      [vyper]
+      enabled = true
+      compilers_dir = "/tmp/compilers"
+
+  # PostgreSQL configuration for production
+  postgresql:
+    enabled: true  # Set to false if using external database
+    auth:
+      username: l2scan
+      database: l2scan
+      # Password should be managed via external secrets
+    primary:
+      persistence:
+        enabled: true
+        size: 500Gi
+        storageClass: ""  # Set your storage class
+      resources:
+        requests:
+          memory: "4Gi"
+          cpu: "2000m"
+        limits:
+          memory: "16Gi"
+          cpu: "8000m"
+    metrics:
+      enabled: true
+
+  # Redis configuration for production
+  redis:
+    enabled: true  # Set to false if using external Redis
+    auth:
+      # Password should be managed via external secrets
+      existingSecret: l2scan-secret-env
+      existingSecretPasswordKey: REDIS_PASSWORD
+    master:
+      persistence:
+        enabled: true
+        size: 20Gi
+        storageClass: ""  # Set your storage class
+      resources:
+        requests:
+          memory: "1Gi"
+          cpu: "500m"
+        limits:
+          memory: "4Gi"
+          cpu: "2000m"
+    metrics:
+      enabled: true
+
+# External Secrets Configuration
+externalSecrets:
+  l2scan-secret-env:
+    provider: aws  # Change to your secret provider (aws, gcp, azure, vault, etc.)
+    data:
+      - remoteRef:
+          key: scroll/l2scan-secret-env
+          property: DATABASE_URL
+        secretKey: DATABASE_URL
+      - remoteRef:
+          key: scroll/l2scan-secret-env
+          property: REDIS_URL
+        secretKey: REDIS_URL
+      - remoteRef:
+          key: scroll/l2scan-secret-env
+          property: PGDSN
+        secretKey: PGDSN
+      - remoteRef:
+          key: scroll/l2scan-secret-env
+          property: REDIS_PASSWORD
+        secretKey: REDIS_PASSWORD
+    refreshInterval: 2m
+    serviceAccount: external-secrets 
