@@ -3,11 +3,11 @@ global:
 
 resources:
   requests:
-    memory: "150Mi"
-    cpu: "50m"
+    memory: "512Mi"
+    cpu: "100m"
   limits:
-    memory: "8Gi"
-    cpu: "4"
+    memory: "2Gi"
+    cpu: "1000m"
 
 envFrom:
   - configMapRef:

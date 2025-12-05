@@ -1,3 +1,11 @@
+resources:
+  requests:
+    cpu: 50m
+    memory: 100Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
 envFrom:
   - secretRef:
       name: bridge-history-fetcher-secret-env

@@ -33,6 +33,14 @@ initContainers:
       - secretRef:
           name: admin-system-backend-secret-env
 
+resources:
+  requests:
+    cpu: 50m
+    memory: 100Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
 envFrom:
   - secretRef:
       name: admin-system-backend-secret-env

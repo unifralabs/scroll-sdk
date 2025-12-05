@@ -1,6 +1,14 @@
 controller:
   replicas: 2
 
+resources:
+  requests:
+    cpu: 50m
+    memory: 100Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
 envFrom:
   - secretRef:
       name: coordinator-cron-secret-env
