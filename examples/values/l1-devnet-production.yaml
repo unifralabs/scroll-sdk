@@ -1,6 +1,14 @@
 global:
   fullnameOverride: l1-devnet
 
+resources:
+  requests:
+    cpu: 50m
+    memory: 100Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
 envFrom:
   - configMapRef:
       name: l1-devnet-env

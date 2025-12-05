@@ -1,6 +1,14 @@
 global:
   fullnameOverride: l2-bootnode-2
 
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+
 envFrom:
   - configMapRef:
       name: l2-bootnode-2-env

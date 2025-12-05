@@ -1,6 +1,14 @@
 global:
   fullnameOverride: l2-rpc
 
+resources:
+  requests:
+    cpu: 100m
+    memory: 1Gi
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+
 envFrom:
   - configMapRef:
       name: l2-rpc-env
